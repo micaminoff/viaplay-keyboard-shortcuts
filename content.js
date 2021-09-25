@@ -33,6 +33,16 @@ document.addEventListener("keyup", (event) => {
       }
     }, 10);
   }
+  
+    /* If it's s, we want to skip intro/recap */
+  if (event.key === "s") {
+    document.querySelector(".scene").click();
+    setTimeout(() => {
+      showUI();
+      const skipPreliminariesButton = document.querySelector(".skip-preliminaries-button");
+      skipPreliminariesButton.click();
+    }, 20);
+  }
 
   return false;
 });
