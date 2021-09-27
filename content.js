@@ -14,6 +14,7 @@ document.addEventListener("keyup", (event) => {
     document.querySelector(".scene").click();
     setTimeout(() => {
       showUI();
+      
       const muteButton = document.querySelector(".audio-control");
       muteButton.click();
     }, 20);
@@ -39,8 +40,11 @@ document.addEventListener("keyup", (event) => {
     document.querySelector(".scene").click();
     setTimeout(() => {
       showUI();
+      
       const skipPreliminariesButton = document.querySelector(".skip-preliminaries-button");
-      skipPreliminariesButton.click();
+      if (skipPreliminariesButton) {
+        skipPreliminariesButton.click();
+      }
     }, 20);
   }
 
