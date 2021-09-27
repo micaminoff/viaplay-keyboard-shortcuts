@@ -1,8 +1,8 @@
 # Features
 
-`m` - Mute/Unmute
-`f` - Enable/Disable Fullscreen
-`s` - Skip Intro/Recap
+`m` - Mute/Unmute  
+`f` - Enable/Disable Fullscreen  
+`s` - Skip Intro/Recap  
 `n` - Quickstart Next Episode (Skip End Credits)
 
 # Viaplay Keyboard Shortcuts (Chrome Extension)
