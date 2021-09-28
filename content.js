@@ -37,27 +37,20 @@ document.addEventListener("keyup", (event) => {
   
   /* If it's s, we want to skip intro/recap */
   if (event.key === "s") {
-    document.querySelector(".scene").click();
-    setTimeout(() => {
-      showUI();
       
-      const skipPreliminariesButton = document.querySelector(".skip-preliminaries-button");
-      if (skipPreliminariesButton) {
-        skipPreliminariesButton.click();
-      }
-    }, 20);
+    const skipPreliminariesButton = document.querySelector(".skip-preliminaries-button");
+    if (skipPreliminariesButton) {
+      skipPreliminariesButton.click();
+    }
   }
   
   /* If it's n, we want to start next episode */
   if (event.key === "n") {
-    setTimeout(() => {
-      showUI();
-      
-      const nextEpisodeButton = document.querySelector(".Buttons-primary-3n82B");
-      if (nextEpisodeButton) {
-        nextEpisodeButton.click();
-      }
-    }, 20);
+    
+    const nextEpisodeButton = document.querySelector(".Buttons-primary-3n82B");
+    if (nextEpisodeButton) {
+      nextEpisodeButton.click();
+    }
   }
 
   return false;
