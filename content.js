@@ -53,16 +53,50 @@ document.addEventListener("keyup", (event) => {
     }
   }
 
+  return false;
+});
+
+/** Listen to user pressing a button in the keyboard (checks if held down) */
+document.addEventListener("keydown", (event) => {
+  event.preventDefault();
+
   /* If it's up, we want to increase volume (increments at 10%)*/
   if (event.key === "ArrowUp") {
-    setTimeout(() => {
-      showUI();
+    showUI();
 
+    /* We need to find __reactEventHandlers and __reactInternalInstance as it changes every time we load the player */
+    const reactInternalInstance = Object.keys(document.querySelector(".scene")).find(key=>key.startsWith("__reactInternalInstance$"));
+    const reactEventHandler = Object.keys(document.querySelector(".scene")).find(key=>key.startsWith("__reactEventHandlers$"));
+    
+    /* We find where to trigger the audio slider*/
+    const toggleAudioControl = document.querySelector(".audio-control")[reactInternalInstance].return.pendingProps;
+
+    /* We open audio control */
+    toggleAudioControl.onMouseEnter();
+
+    /* We find where to change volume */
+    const volume =  document.querySelector(".audio-slider")[reactEventHandler].children.props;
+
+    /* Make sure audio doesn't go above 1 (100%) */
+    if ((volume.value + 0.1) > 1) {
+      volume.onChange(1);
+    } else {
+      volume.onChange(volume.value + 0.1)
+    }
+
+    /* We close audio control */
+    toggleAudioControl.onMouseLeave();
+  }
+
+    /* If it's down, we want to decrease volume (increments at 10%)*/
+    if (event.key === "ArrowDown") {
+      showUI();
+  
       /* We need to find __reactEventHandlers and __reactInternalInstance as it changes every time we load the player */
       const reactInternalInstance = Object.keys(document.querySelector(".scene")).find(key=>key.startsWith("__reactInternalInstance$"));
       const reactEventHandler = Object.keys(document.querySelector(".scene")).find(key=>key.startsWith("__reactEventHandlers$"));
-      
-      /* We find where to trigger the audio slider*/
+
+      /* We find where to trigger the audio slider */
       const toggleAudioControl = document.querySelector(".audio-control")[reactInternalInstance].return.pendingProps;
 
       /* We open audio control */
@@ -70,49 +104,16 @@ document.addEventListener("keyup", (event) => {
 
       /* We find where to change volume */
       const volume =  document.querySelector(".audio-slider")[reactEventHandler].children.props;
-
-      /* Make sure audio doesn't go above 1 (100%) */
-      if ((volume.value + 0.1) > 1) {
-        volume.onChange(1);
+      
+      /* Make sure audio doesn't go below 0 */
+      if ((volume.value - 0.1) < 0) {
+        volume.onChange(0);
       } else {
-        volume.onChange(volume.value + 0.1)
+        volume.onChange(volume.value - 0.1)
       }
-
+      
       /* We close audio control */
       toggleAudioControl.onMouseLeave();
-
-    }, 10);
-  }
-
-    /* If it's down, we want to decrease volume (increments at 10%)*/
-    if (event.key === "ArrowDown") {
-      setTimeout(() => {
-        showUI();
-  
-        /* We need to find __reactEventHandlers and __reactInternalInstance as it changes every time we load the player */
-        const reactInternalInstance = Object.keys(document.querySelector(".scene")).find(key=>key.startsWith("__reactInternalInstance$"));
-        const reactEventHandler = Object.keys(document.querySelector(".scene")).find(key=>key.startsWith("__reactEventHandlers$"));
-
-        /* We find where to trigger the audio slider */
-        const toggleAudioControl = document.querySelector(".audio-control")[reactInternalInstance].return.pendingProps;
-
-        /* We open audio control */
-        toggleAudioControl.onMouseEnter();
-
-        /* We find where to change volume */
-        const volume =  document.querySelector(".audio-slider")[reactEventHandler].children.props;
-        
-        /* Make sure audio doesn't go below 0 */
-        if ((volume.value - 0.1) < 0) {
-          volume.onChange(0);
-        } else {
-          volume.onChange(volume.value - 0.1)
-        }
-        
-        /* We close audio control */
-        toggleAudioControl.onMouseLeave();
-  
-      }, 10);
     }
 
   return false;
