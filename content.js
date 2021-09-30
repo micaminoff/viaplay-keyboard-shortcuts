@@ -5,20 +5,16 @@ const showUI = () => {
     .dispatchEvent(new Event("mousemove", { bubbles: true }));
 };
 
-let sessionID;
-/* We append this string to use react keys*/
-function setSessionID() {
-  sessionID = Object.keys(document.getElementById("react-mount")).find(key=>key.startsWith("__reactContainere$")).split("$")[1];
+const showAudioSlider = () => {
+  document
+    .querySelector(".audio-control")
+    .dispatchEvent(new Event("mouseover", { bubbles: true }));
 }
 
-/* We check if document is ready */
-if (document.readyState !== "loading") {
-  setSessionID();
-} else {
-  /* If not we execute when ready */
-  document.addEventListener("DOMContentLoaded", function () {
-    setSessionID()
-  });
+const hideAudioSlider = () => {
+  document
+    .querySelector(".audio-control")
+    .dispatchEvent(new Event("mouseout", { bubbles: true }));
 }
 
 /* Listen to user pressing a button in the keyboard */
@@ -70,22 +66,21 @@ document.addEventListener("keyup", (event) => {
   }
 
   /* If it's up, we want to increase volume (increments at 10%)*/
-  if (event.key === "ArrowUp" && !!sessionID) {
+  if (event.key === "ArrowUp") {
     setTimeout(() => {
       showUI();
-
+      showAudioSlider();
+      
       /* We need to find __reactEventHandlers and __reactInternalInstance as it changes every time we load the player */
-      const reactInternalInstance = "__reactInternalInstance$" + sessionID;
-      const reactEventHandlers = "__reactEventHandlers$" + sessionID;
-
-      /* We find where to trigger the audio slider*/
-      const toggleAudioControl = document.querySelector(".audio-control")[reactInternalInstance].return.pendingProps;
-
-      /* We open audio control */
-      toggleAudioControl.onMouseEnter();
+      var audioSlider = document.querySelector(".audio-slider");
+      var reactHandlerKey = Object.keys(audioSlider).filter(function(item){
+        return item.indexOf('__reactEventHandlers') >= 0
+      });
+      var reactHandler = audioSlider[reactHandlerKey[0]];
+      console.log(reactHandler);
 
       /* We find where to change volume */
-      const volumeLevel =  document.querySelector(".audio-slider")[reactEventHandlers].children.props;
+      const volumeLevel =  reactHandler.children.props;
 
       /* Make sure audio doesn't go above 1 (100%) */
       if ((volumeLevel.value + 0.1) > 1) {
@@ -94,44 +89,38 @@ document.addEventListener("keyup", (event) => {
         volumeLevel.onChange(volumeLevel.value + 0.1)
       }
 
-      /* We close audio control */
-      toggleAudioControl.onMouseLeave();
+      hideAudioSlider();
 
     }, 10);
-  } else {
-
   }
 
-    /* If it's down, we want to decrease volume (increments at 10%)*/
-    if (event.key === "ArrowDown" && !!sessionID) {
-      setTimeout(() => {
-        showUI();
+  /* If it's down, we want to decrease volume (increments at 10%)*/
+  if (event.key === "ArrowDown") {
+    setTimeout(() => {
+      showUI();
+      showAudioSlider();
 
-        /* We need to find __reactEventHandlers and __reactInternalInstance as it changes every time we load the player */
-        const reactInternalInstance = "__reactInternalInstance$" + sessionID;
-        const reactEventHandlers = "__reactEventHandlers$" + sessionID;
+      /* We need to find __reactEventHandlers and __reactInternalInstance as it changes every time we load the player */
+      var audioSlider = document.querySelector(".audio-slider");
+      var reactHandlerKey = Object.keys(audioSlider).filter(function(item){
+        return item.indexOf('__reactEventHandlers') >= 0
+      });
+      var reactHandler = audioSlider[reactHandlerKey[0]];
 
-        /* We find where to trigger the audio slider */ 
-        const toggleAudioControl = document.querySelector(".audio-control")[reactInternalInstance].return.pendingProps;
+      /* We find where to change volume */
+      const volumeLevel =  reactHandler.children.props;
+      
+      /* Make sure audio doesn't go below 0 */
+      if ((volumeLevel.value - 0.1) < 0) {
+        volumeLevel.onChange(0);
+      } else {
+        volumeLevel.onChange(volumeLevel.value - 0.1)
+      }
+      
+      hideAudioSlider();
 
-        /* We open audio control */
-        toggleAudioControl.onMouseEnter();
-
-        /* We find where to change volume */
-        const volumeLevel =  document.querySelector(".audio-slider")[reactEventHandlers].children.props;
-        
-        /* Make sure audio doesn't go below 0 */
-        if ((volumeLevel.value - 0.1) < 0) {
-          volumeLevel.onChange(0);
-        } else {
-          volumeLevel.onChange(volumeLevel.value - 0.1)
-        }
-        
-        /* We close audio control */
-        toggleAudioControl.onMouseLeave();
-  
-      }, 10);
-    }
+    }, 10);
+  }
 
   return false;
 });
