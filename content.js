@@ -53,7 +53,6 @@ const observer = new MutationObserver(callback);
 /* Start observing the target node for configured mutations */
 observer.observe(reactMount, config);
 
-
 console.log("Start!");
 /* Viaplay's player injects the controls as DOM elements when mouse moves so we need to trigger that */
 const showUI = () => {
@@ -187,6 +186,7 @@ document.addEventListener("keydown", (event) => {
     hideAudioSlider();
   }
 });
+
 `;
 
 /* We inject the script */
