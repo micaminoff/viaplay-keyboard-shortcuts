@@ -76,6 +76,20 @@ const hideAudioSlider = () => {
     .dispatchEvent(new Event("mouseout", { bubbles: true }));
 }
 
+/* Listen to user double-clicking */
+document.addEventListener('dblclick', function (event) {
+  if (isPlayer === true) {
+    showUI();
+    /* We ignore double-clicks on player controls */
+    var ignoreClickOnMeElement = document.querySelector(".playback-controls");
+    var isClickInsideElement = ignoreClickOnMeElement.contains(event.target);
+    if (!isClickInsideElement) {
+      /* We trigger the f (fullscreen) button */
+      document.dispatchEvent(new KeyboardEvent("keyup", { key : "f" }));
+    }
+  }
+});
+
 /* Listen to user pressing a button on the keyboard */
 document.addEventListener("keyup", (event) => {
   event.preventDefault();
@@ -92,14 +106,16 @@ document.addEventListener("keyup", (event) => {
 
   /* If it's f, we want to toggle fullscreen */
   if (event.key === "f" && isPlayer === true) {
-    document.querySelector(".scene").click();
+    showUI();
+    const fullscreen = document.querySelector(".fullscreen");
+    if (fullscreen) {
+      fullscreen.click();
+    } else {
+      document.querySelector(".no-fullscreen").click();
+    }
     setTimeout(() => {
-      showUI();
-      const fullscreen = document.querySelector(".fullscreen");
-      if (fullscreen) {
-        fullscreen.click();
-      } else {
-        document.querySelector(".no-fullscreen").click();
+      if (document.querySelector(".play")) {
+        document.querySelector(".play").click();
       }
     }, 10);
   }
@@ -147,6 +163,7 @@ document.addEventListener("keydown", (event) => {
     }
     hideAudioSlider();
   }
+
   /* If it's down, we want to decrease volume (increments at 10%)*/
   if (event.key === "ArrowDown" && isPlayer === true) {
     showUI();
