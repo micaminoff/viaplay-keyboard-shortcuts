@@ -1,22 +1,29 @@
+# Features
+
+`m`     - Mute/Unmute  
+`f`     - Enable/Disable Fullscreen (double-click also works since patch-4)
+`s`     - Skip Intro/Recap  
+`n`     - Quickstart Next Episode (Skip End Credits)  
+`up`    - Increase volume  
+`down`  - Decrease volume  
+
 # Viaplay Keyboard Shortcuts (Chrome Extension)
 
 ![](project-logo-viaplay-shortcuts.png)
 
-Viaplay is a streaming service with one annoying feature: it doesn't support using `m` key to mute nor `f` key to toggle fullscreen like almost any other player in the web these days.
+Viaplay is a streaming service with very limited hotkey functionality. This unpacked Chrome extension aims to solve that problem.
 
-I built this unpacked (at least until I can fix all the issues) Chrome extension to solve that problem.
-
-(PS. I also built [one for Telia TV](https://github.com/Hamatti/teliatv-keyboard-shortcuts))
+(PS. There is also one [one for Telia TV](https://github.com/Hamatti/teliatv-keyboard-shortcuts))
 
 ## How to use?
 
-It's currently an unpacked extension so [download this](https://github.com/Hamatti/viaplay-keyboard-shortcuts/archive/master.zip) and unzip it into a folder. Then open your Google Chrome, go to [chrome://extensions](chrome://extensions), enable Developer mode from the toggle and select "Load unpacked" and navigate to the folder you unzipped it into.
+It's currently an unpacked extension so download and unzip it into a folder. Then open your Google Chrome, go to [chrome://extensions](chrome://extensions), enable Developer mode from the toggle and select "Load unpacked" and navigate to the folder you unzipped it into.
 
 Now whenever you navigate to [viaplay.fi](https://viaplay.fi) and start playing a video, the new keyboard shortcuts will be available.
 
 ## Note
 
-Please note that this extension is not affiliated, endorsed or supported by Viaplay or Viasat. It is a hobby project built by a user.
+Please note that this extension is not affiliated, endorsed or supported by Viaplay or Viasat. It is a hobby project built by users.
 
 ## LICENSE
 
