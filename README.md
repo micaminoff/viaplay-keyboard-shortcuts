@@ -1,19 +1,19 @@
 # Features
 
-`m` - Mute/Unmute  
-`f` - Enable/Disable Fullscreen  
-`s` - Skip Intro/Recap  
-`n` - Quickstart Next Episode (Skip End Credits)
+`m`     - Mute/Unmute  
+`f`     - Enable/Disable Fullscreen  
+`s`     - Skip Intro/Recap  
+`n`     - Quickstart Next Episode (Skip End Credits)  
+`up`    - Increase volume  
+`down`  - Decrease volume  
 
 # Viaplay Keyboard Shortcuts (Chrome Extension)
 
 ![](project-logo-viaplay-shortcuts.png)
 
-Viaplay is a streaming service with one annoying feature: it doesn't support using `m` key to mute nor `f` key to toggle fullscreen like almost any other player in the web these days. The player also doesn't support skipping the intro/recap wtih `s` or quickstarting the next episode with `n`.
+Viaplay is a streaming service with very limited hotkey functionality. This unpacked Chrome extension aims to solve that problem.
 
-I built this unpacked (at least until I can fix all the issues) Chrome extension to solve that problem.
-
-(PS. I also built [one for Telia TV](https://github.com/Hamatti/teliatv-keyboard-shortcuts))
+(PS. There is also one [one for Telia TV](https://github.com/Hamatti/teliatv-keyboard-shortcuts))
 
 ## How to use?
 
@@ -23,7 +23,7 @@ Now whenever you navigate to [viaplay.fi](https://viaplay.fi) and start playing 
 
 ## Note
 
-Please note that this extension is not affiliated, endorsed or supported by Viaplay or Viasat. It is a hobby project built by a user.
+Please note that this extension is not affiliated, endorsed or supported by Viaplay or Viasat. It is a hobby project built by users.
 
 ## LICENSE
 
