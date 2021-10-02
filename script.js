@@ -2,13 +2,13 @@
 let isPlayer = getIsPlayer();
 
 /* We use react-mount as parent */
-function getReactMount() {
+function getReactMountElement() {
   return document.getElementById("react-mount");
 }
 
 /* We see if current child is player */
 function getChildNodeName() {
-  return getReactMount().children[0].className.toString();
+  return getReactMountElement().children[0].className.toString();
 }
 
 /* If player exists, isPlayer = true */
@@ -21,27 +21,62 @@ function getIsPlayer() {
 }
 
 /* Options for the observer (which mutations to observe) */
-const config = { attributes: false, childList: true, subtree: false };
+const reactMountConfig = { attributes: false, childList: true, subtree: false };
 /* Callback function to execute when mutations are observed */
-const callback = function(mutationsList, observer) {
+const reactMountCallback = function(mutationsList, observer) {
     /* Check when leave player */
     for(const mutation of mutationsList) {
         mutationClass = mutation["addedNodes"][0]
         if (!!mutationClass) {
             if (mutationClass.className === "Player-container-3Ekyi") {
               isPlayer = true;
+              observeScene(true);
             } else {
               isPlayer = false;
+              observeScene(false);
             }
         }
     }
 };
 
 /* Create an observer instance linked to the callback function */
-const observer = new MutationObserver(callback);
+const reactMountObserver = new MutationObserver(reactMountCallback);
 /* Start observing the target node for configured mutations */
-const reactMount = getReactMount();
-observer.observe(reactMount, config);
+const reactMountElement = getReactMountElement();
+reactMountObserver.observe(reactMountElement, reactMountConfig);
+
+/* Options for the observer (which mutations to observe) */
+const sceneConfig = { attributes: true, childList: false, subtree: false };
+/* Callback function to execute when mutations are observed */
+const sceneCallback = function(mutationsList, observer) {
+    /* Check when UI hides/is shown */
+    for(const mutation of mutationsList) {
+        mutationClassName = mutation["target"]["className"];
+        if (mutationClassName === "scene hide") {
+            /* If UI hides, we hide mouse */
+            document.querySelector(".scene").style.cursor = "none";
+        } else {
+            /* If UI is shown, we show mouse */
+            document.querySelector(".scene").style.cursor = "auto";
+        }
+    }
+};
+
+/* Create an observer instance linked to the callback function */
+const sceneObserver = new MutationObserver(sceneCallback);
+/* Start observing the target node for configured mutations */
+if (isPlayer) {
+  observeScene(true);
+}
+
+function observeScene(canObserve) {
+  if (canObserve === true) {
+    sceneObserver.observe(document.querySelector(".scene"), sceneConfig);
+  } else {
+    sceneObserver.disconnect();
+  }
+  
+}
 
 /* Viaplay's player injects the controls as DOM elements when mouse moves so we need to trigger that */
 const showUI = () => {
@@ -65,7 +100,7 @@ const hideAudioSlider = () => {
 }
 
 /* Listen to user double-clicking */
-document.addEventListener('dblclick', function (event) {
+document.addEventListener("dblclick", function (event) {
   if (isPlayer === true) {
     showUI();
     /* We ignore double-clicks on player controls */
@@ -138,7 +173,7 @@ document.addEventListener("keydown", (event) => {
     /* We need to find __reactEventHandlers as it changes every time we load the player */
     var audioSlider = document.querySelector(".audio-slider");
     var reactHandlerKey = Object.keys(audioSlider).filter(function(item){
-      return item.indexOf('__reactEventHandlers') >= 0
+      return item.indexOf("__reactEventHandlers") >= 0
     });
     var reactHandler = audioSlider[reactHandlerKey[0]];
     /* We find where to change volume */
@@ -159,7 +194,7 @@ document.addEventListener("keydown", (event) => {
     /* We need to find __reactEventHandlers as it changes every time we load the player */
     var audioSlider = document.querySelector(".audio-slider");
     var reactHandlerKey = Object.keys(audioSlider).filter(function(item){
-      return item.indexOf('__reactEventHandlers') >= 0
+      return item.indexOf("__reactEventHandlers") >= 0
     });
     var reactHandler = audioSlider[reactHandlerKey[0]];
     /* We find where to change volume */
