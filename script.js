@@ -156,7 +156,7 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowDown" && isPlayer === true) {
     showUI();
     showAudioSlider();
-    /* We need to find __reactEventHandlers and __reactInternalInstance as it changes every time we load the player */
+    /* We need to find __reactEventHandlers as it changes every time we load the player */
     var audioSlider = document.querySelector(".audio-slider");
     var reactHandlerKey = Object.keys(audioSlider).filter(function(item){
       return item.indexOf('__reactEventHandlers') >= 0
