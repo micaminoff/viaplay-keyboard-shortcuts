@@ -116,95 +116,88 @@ document.addEventListener("dblclick", function (event) {
 /* Listen to user pressing a button on the keyboard */
 document.addEventListener("keyup", (event) => {
   event.preventDefault();
-  /* If it's m, we want to mute/unmute */
-  if (event.key === "m" && isPlayer === true) {
-    document.querySelector(".scene").click();
-    setTimeout(() => {
-      showUI();
-      
-      const muteButton = document.querySelector(".audio-control");
-      muteButton.click();
-    }, 20);
-  }
+  if (isPlayer === true) {
+    switch (event.key) {
 
-  /* If it's f, we want to toggle fullscreen */
-  if (event.key === "f" && isPlayer === true) {
-    showUI();
-    const fullscreen = document.querySelector(".fullscreen");
-    if (fullscreen) {
-      fullscreen.click();
-    } else {
-      document.querySelector(".no-fullscreen").click();
-    }
-    setTimeout(() => {
-      /* We click play if possible after fullscreen toggle */
-      if (document.querySelector(".play")) {
-        document.querySelector(".play").click();
-      }
-    }, 10);
-  }
-  
-  /* If it's s, we want to skip intro/recap */
-  if (event.key === "s" && isPlayer === true) {
-      
-    const skipPreliminariesButton = document.querySelector(".skip-preliminaries-button");
-    if (skipPreliminariesButton) {
-      skipPreliminariesButton.click();
-    }
-  }
-  
-  /* If it's n, we want to start next episode */
-  if (event.key === "n" && isPlayer === true) {
-    
-    const nextEpisodeButton = document.querySelector(".Buttons-primary-3n82B");
-    if (nextEpisodeButton) {
-      nextEpisodeButton.click();
+      /* If it's m, we want to mute/unmute */
+      case "m":
+        showUI();
+        const muteButton = document.querySelector(".audio-control");
+        muteButton.click();
+        setTimeout(() => {
+          if (document.querySelector(".play")) {
+            document.querySelector(".play").click();
+          }
+        }, 10);
+        break;
+
+      /* If it's f, we want to toggle fullscreen */
+      case "f":
+        showUI();
+        const fullscreen = document.querySelector(".fullscreen");
+        if (fullscreen) {
+          fullscreen.click();
+        } else if (document.querySelector(".no-fullscreen")) {
+          document.querySelector(".no-fullscreen").click();
+        }
+        setTimeout(() => {
+          if (document.querySelector(".play")) {
+            document.querySelector(".play").click();
+          }
+        }, 10);
+        break;
+
+      /* If it's s, we want to skip intro/recap */
+      case "s":
+        const skipPreliminariesButton = document.querySelector(".skip-preliminaries-button");
+        if (skipPreliminariesButton) {
+          skipPreliminariesButton.click();
+        }
+        break;
+        
+      /* If it's n, we want to start next episode */
+      case "n":
+        const nextEpisodeButton = document.querySelector(".Buttons-primary-3n82B");
+        if (nextEpisodeButton) {
+          nextEpisodeButton.click();
+        }
     }
   }
   return false;
 });
 
+/* Function to change volume */
+function changeVolume(changeAmount) {
+  showUI();
+  showAudioSlider();
+  /* We need to find __reactEventHandlers as it changes every time we go to Viaplay */
+  const audioSlider = document.querySelector(".audio-slider");
+  const reactHandlerKey = Object.keys(audioSlider).filter(function(item){
+    return item.indexOf('__reactEventHandlers') >= 0
+  });
+  const reactHandler = audioSlider[reactHandlerKey[0]];
+  /* We find where to change volume */
+  const volumeLevel =  reactHandler.children.props;
+  /* Make sure audio stays within 0 and 1 */
+  const max = 1;
+  const min = 0;
+  let num = volumeLevel.value + changeAmount;
+  const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+  let newVolume = clamp(num,min,max);
+  /* We change the volume */
+  volumeLevel.onChange(newVolume);
+  hideAudioSlider();
+}
+
 /* Listen to user pressing/holding down a button on the keyboard */
 document.addEventListener("keydown", (event) => {
-  /* If it's up, we want to increase volume (increments at 10%)*/
-  if (event.key === "ArrowUp" && isPlayer === true) {
-    showUI();
-    showAudioSlider();
-    /* We need to find __reactEventHandlers as it changes every time we load the player */
-    var audioSlider = document.querySelector(".audio-slider");
-    var reactHandlerKey = Object.keys(audioSlider).filter(function(item){
-      return item.indexOf("__reactEventHandlers") >= 0
-    });
-    var reactHandler = audioSlider[reactHandlerKey[0]];
-    /* We find where to change volume */
-    const volumeLevel =  reactHandler.children.props;
-    /* Make sure audio doesn't go above 1 (100%) */
-    if ((volumeLevel.value + 0.1) > 1) {
-      volumeLevel.onChange(1);
-    } else {
-      volumeLevel.onChange(volumeLevel.value + 0.1)
+  if (isPlayer === true) {
+    switch(event.key) {
+      case "ArrowUp":
+        changeVolume(0.1);
+        break;
+      case "ArrowDown":
+        changeVolume(-0.1);
     }
-    hideAudioSlider();
-  }
-
-  /* If it's down, we want to decrease volume (increments at 10%)*/
-  if (event.key === "ArrowDown" && isPlayer === true) {
-    showUI();
-    showAudioSlider();
-    /* We need to find __reactEventHandlers as it changes every time we load the player */
-    var audioSlider = document.querySelector(".audio-slider");
-    var reactHandlerKey = Object.keys(audioSlider).filter(function(item){
-      return item.indexOf("__reactEventHandlers") >= 0
-    });
-    var reactHandler = audioSlider[reactHandlerKey[0]];
-    /* We find where to change volume */
-    const volumeLevel =  reactHandler.children.props;
-    /* Make sure audio doesn't go below 0 */
-    if ((volumeLevel.value - 0.1) < 0) {
-      volumeLevel.onChange(0);
-    } else {
-      volumeLevel.onChange(volumeLevel.value - 0.1)
-    }
-    hideAudioSlider();
   }
 });

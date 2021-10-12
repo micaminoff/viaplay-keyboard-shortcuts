@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Add keyboard shortcut support to Viaplay web player",
-  "version": "1.4",
+  "version": "1.5",
   "web_accessible_resources": ["script.js"],
   "content_scripts": [
     {
