@@ -75,7 +75,6 @@ function observeScene(canObserve) {
   } else {
     sceneObserver.disconnect();
   }
-  
 }
 
 /* Viaplay's player injects the controls as DOM elements when mouse moves so we need to trigger that */
@@ -96,6 +95,20 @@ const showAudioSlider = () => {
 const hideAudioSlider = () => {
   document
     .querySelector(".audio-control")
+    .dispatchEvent(new Event("mouseout", { bubbles: true }));
+}
+
+/* Event to open subtitle selection */
+const showSubtitles = () => {
+  document
+    .querySelector("button.language.subtitlesAvailable")
+    .dispatchEvent(new Event("mouseover", { bubbles: true }));
+}
+
+/* Event to close subtitle selection */
+const hideSubtitles = () => {
+  document
+    .querySelector("button.language.subtitlesAvailable")
     .dispatchEvent(new Event("mouseout", { bubbles: true }));
 }
 
@@ -161,6 +174,16 @@ document.addEventListener("keyup", (event) => {
         if (nextEpisodeButton) {
           nextEpisodeButton.click();
         }
+        break;
+
+      case "t":
+        /* If button was not held */
+        if (holdTimer <= 1) {
+          /* Cycle subtitles */
+          changeSubtitles(false);
+        }
+        /* Reset hold timer */
+        holdTimer = 0;
     }
   }
   return false;
@@ -198,6 +221,50 @@ document.addEventListener("keydown", (event) => {
         break;
       case "ArrowDown":
         changeVolume(-0.1);
+        break;
+      case "t":
+        if (holdTimer === 2) {
+          changeSubtitles(true);
+        }
+        holdTimer++;
     }
   }
 });
+
+/* Tracks time button held down */
+let holdTimer = 0;
+/* Tracks selected subtitle */
+let currentSubtitle = 0;
+
+/* Cycle if toggle(bool) else toggle */
+function changeSubtitles(toggle) {
+  showUI();
+  showSubtitles();
+  /* We find the subtitles */
+  const subtitles = document.querySelector("div.subtitle-languages").children[1].children;
+  const numberOfSubtitles = subtitles.length;
+  if (numberOfSubtitles > 1) {
+    if (toggle === true) {
+      /* Check if subtitles are on */
+      if (!subtitles[numberOfSubtitles-1].className) {
+        /* Turn off subtitles */
+        subtitles[numberOfSubtitles-1].click();
+      } else {
+        /* Turn on subtitles to previous */
+        subtitles[currentSubtitle].click();
+      }
+      /* If subtitles off, toggle to previous */
+    } else if (!!subtitles[numberOfSubtitles-1].className) {
+      subtitles[currentSubtitle].click();
+      /* Cycle to next subtitles */
+    } else if (currentSubtitle < numberOfSubtitles-2) {
+      subtitles[currentSubtitle+1].click();
+      currentSubtitle++;
+    } else {
+      /* Reset subtitles cycle */
+      subtitles[0].click();
+      currentSubtitle = 0;
+    }
+  }
+  hideSubtitles();
+}
