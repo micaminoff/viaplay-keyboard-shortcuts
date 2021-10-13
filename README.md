@@ -1,11 +1,11 @@
 # Features
 
-`m`     - Mute/Unmute  
-`f`     - Enable/Disable Fullscreen (double-click also works since patch-4)  
-`s`     - Skip Intro/Recap  
-`n`     - Quickstart Next Episode (Skip End Credits)  
-`up`    - Increase volume  
-`down`  - Decrease volume  
+`m` - Mute/Unmute  
+`f` - Enable/Disable Fullscreen (double-click also works since patch-4)  
+`s` - Skip Intro/Recap  
+`n` - Quickstart Next Episode (Skip End Credits)  
+`up` - Increase volume  
+`down` - Decrease volume
 
 # Viaplay Keyboard Shortcuts (Chrome Extension)
 
@@ -20,6 +20,8 @@ Viaplay is a streaming service with very limited hotkey functionality. This unpa
 It's currently an unpacked extension so download and unzip it into a folder. Then open your Google Chrome, go to [chrome://extensions](chrome://extensions), enable Developer mode from the toggle and select "Load unpacked" and navigate to the folder you unzipped it into.
 
 Now whenever you navigate to [viaplay.fi](https://viaplay.fi) and start playing a video, the new keyboard shortcuts will be available.
+
+Now with cross-browser compatibility! Simply create a bookmarklet an load it whenever you visit a viaplay domain. Paste the contents of `bookmarklet` into a new bookmark in the `url` field and the extension will be loaded.
 
 ## Note
 
