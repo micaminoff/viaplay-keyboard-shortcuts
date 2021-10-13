@@ -1,5 +1,7 @@
 /* We need to keep track of the player */
+alert('bookmarklet loaded');
 let isPlayer = getIsPlayer();
+
 
 /* We use react-mount as parent */
 function getReactMount() {
