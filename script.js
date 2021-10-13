@@ -1,39 +1,27 @@
+const reactMount = document.getElementById('react-mount');
+
 /* We need to keep track of the player */
 /* If player exists, isPlayer = true */
-
-let isPlayer = getChildNodeName() === 'Player-container-3Ekyi';
-
-/* We use react-mount as parent */
-function getReactMount() {
-  return document.getElementById('react-mount');
-}
-
-/* We see if current child is player */
-function getChildNodeName() {
-  return getReactMount().children[0].className.toString();
-}
+let isPlayer = reactMount.children[0].className.toString() === 'Player-container-3Ekyi';
 
 /* Options for the observer (which mutations to observe) */
 const config = { attributes: false, childList: true, subtree: false };
+
 /* Callback function to execute when mutations are observed */
-const callback = function (mutationsList, observer) {
+const callback = function (mutationsList) {
   /* Check when leave player */
   for (const mutation of mutationsList) {
     mutationClass = mutation['addedNodes'][0];
     if (!!mutationClass) {
-      if (mutationClass.className === 'Player-container-3Ekyi') {
-        isPlayer = true;
-      } else {
-        isPlayer = false;
-      }
+      isPlayer = mutationClass.className === 'Player-container-3Ekyi';
     }
   }
 };
 
 /* Create an observer instance linked to the callback function */
 const observer = new MutationObserver(callback);
-/* Start observing the target node for configured mutations */
-const reactMount = getReactMount();
+
+/* Start observing react-mount node for configured mutations */
 observer.observe(reactMount, config);
 
 /* Viaplay's player injects the controls as DOM elements when mouse moves so we need to trigger that */
