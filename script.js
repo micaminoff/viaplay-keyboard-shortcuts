@@ -107,7 +107,9 @@ const getVolumeLevel = () => {
   showUI();
   showAudioSlider();
   /* We need to find __reactEventHandlers as it changes every time we load the player */
-  const audioSliderHandler = document.querySelector('.audio-slider')['__reactEventHandlers'];
+  const audioSliderHandler = Object.keys(document.querySelector('.audio-slider')).find((key) =>
+    key.startsWith('__reactEventHandlers')
+  );
   /* We find where to change volume */
   return audioSliderHandler.children.props;
 };
