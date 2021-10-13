@@ -235,11 +235,33 @@ document.addEventListener("keydown", (event) => {
 let holdTimer = 0;
 /* Tracks selected subtitle */
 let currentSubtitle = 0;
+/* Dynamic timer */
+var timer = {
+  /* Run at end of timer */
+  remind: function(func) {
+    func();
+    this.timeoutID = undefined;
+  },
+  /* Start timer */
+  setup: function(func, time) {
+    if (typeof this.timeoutID === 'number') {
+      this.cancel();
+    }
+    this.timeoutID = setTimeout(function() {
+      this.remind(func);
+    }.bind(this), time);
+  },
+  /* Cancel timer */
+  cancel: function() {
+    clearTimeout(this.timeoutID);
+  }
+};
 
 /* Cycle if toggle(bool) else toggle */
 function changeSubtitles(toggle) {
   showUI();
   showSubtitles();
+  timer.cancel();
   /* We find the subtitles */
   const subtitles = document.querySelector("div.subtitle-languages").children[1].children;
   const numberOfSubtitles = subtitles.length;
@@ -266,5 +288,5 @@ function changeSubtitles(toggle) {
       currentSubtitle = 0;
     }
   }
-  hideSubtitles();
+  timer.setup(hideSubtitles, 2000);
 }
