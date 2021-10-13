@@ -8,7 +8,7 @@ let isPlayer = reactMount.children[0].className.toString() === 'Player-container
 const config = { attributes: false, childList: true, subtree: false };
 
 /* Callback function to execute when mutations are observed */
-const callback = function (mutationsList) {
+const callback = (mutationsList) => {
   /* Check when leave player */
   for (const mutation of mutationsList) {
     mutationClass = mutation['addedNodes'][0];
@@ -40,7 +40,7 @@ const hideAudioSlider = () => {
 };
 
 /* Listen to user double-clicking */
-document.addEventListener('dblclick', function (event) {
+document.addEventListener('dblclick', (event) => {
   if (isPlayer === true) {
     showUI();
     /* We ignore double-clicks on player controls */
@@ -110,7 +110,7 @@ document.addEventListener('keydown', (event) => {
     showAudioSlider();
     /* We need to find __reactEventHandlers as it changes every time we load the player */
     var audioSlider = document.querySelector('.audio-slider');
-    var reactHandlerKey = Object.keys(audioSlider).filter(function (item) {
+    var reactHandlerKey = Object.keys(audioSlider).filter((item) => {
       return item.indexOf('__reactEventHandlers') >= 0;
     });
     var reactHandler = audioSlider[reactHandlerKey[0]];
@@ -131,7 +131,7 @@ document.addEventListener('keydown', (event) => {
     showAudioSlider();
     /* We need to find __reactEventHandlers as it changes every time we load the player */
     var audioSlider = document.querySelector('.audio-slider');
-    var reactHandlerKey = Object.keys(audioSlider).filter(function (item) {
+    var reactHandlerKey = Object.keys(audioSlider).filter((item) => {
       return item.indexOf('__reactEventHandlers') >= 0;
     });
     var reactHandler = audioSlider[reactHandlerKey[0]];
