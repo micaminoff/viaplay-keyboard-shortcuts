@@ -1,5 +1,7 @@
 /* We need to keep track of the player */
-let isPlayer = getIsPlayer();
+/* If player exists, isPlayer = true */
+
+let isPlayer = getChildNodeName() === 'Player-container-3Ekyi';
 
 /* We use react-mount as parent */
 function getReactMount() {
@@ -9,15 +11,6 @@ function getReactMount() {
 /* We see if current child is player */
 function getChildNodeName() {
   return getReactMount().children[0].className.toString();
-}
-
-/* If player exists, isPlayer = true */
-function getIsPlayer() {
-  if (getChildNodeName() === 'Player-container-3Ekyi') {
-    return true;
-  } else {
-    return false;
-  }
 }
 
 /* Options for the observer (which mutations to observe) */
