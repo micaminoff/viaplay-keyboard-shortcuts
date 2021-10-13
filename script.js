@@ -41,7 +41,7 @@ const hideAudioSlider = () => {
 
 /* Listen to user double-clicking */
 document.addEventListener('dblclick', (event) => {
-  if (isPlayer === true) {
+  if (isPlayer) {
     showUI();
     /* We ignore double-clicks on player controls */
     var ignoreClickOnMeElement = document.querySelector('.playback-controls');
@@ -56,8 +56,9 @@ document.addEventListener('dblclick', (event) => {
 /* Listen to user pressing a button on the keyboard */
 document.addEventListener('keyup', (event) => {
   event.preventDefault();
+  if (!isPlayer) return; // Early exit if no player
   /* If it's m, we want to mute/unmute */
-  if (event.key === 'm' && isPlayer === true) {
+  if (event.key === 'm') {
     document.querySelector('.scene').click();
     setTimeout(() => {
       showUI();
@@ -68,7 +69,7 @@ document.addEventListener('keyup', (event) => {
   }
 
   /* If it's f, we want to toggle fullscreen */
-  if (event.key === 'f' && isPlayer === true) {
+  if (event.key === 'f') {
     showUI();
     const fullscreen = document.querySelector('.fullscreen');
     if (fullscreen) {
@@ -85,7 +86,7 @@ document.addEventListener('keyup', (event) => {
   }
 
   /* If it's s, we want to skip intro/recap */
-  if (event.key === 's' && isPlayer === true) {
+  if (event.key === 's') {
     const skipPreliminariesButton = document.querySelector('.skip-preliminaries-button');
     if (skipPreliminariesButton) {
       skipPreliminariesButton.click();
@@ -93,7 +94,7 @@ document.addEventListener('keyup', (event) => {
   }
 
   /* If it's n, we want to start next episode */
-  if (event.key === 'n' && isPlayer === true) {
+  if (event.key === 'n') {
     const nextEpisodeButton = document.querySelector('.Buttons-primary-3n82B');
     if (nextEpisodeButton) {
       nextEpisodeButton.click();
@@ -105,7 +106,8 @@ document.addEventListener('keyup', (event) => {
 /* Listen to user pressing/holding down a button on the keyboard */
 document.addEventListener('keydown', (event) => {
   /* If it's up, we want to increase volume (increments at 10%)*/
-  if (event.key === 'ArrowUp' && isPlayer === true) {
+  if (!isPlayer) return; // Early exit
+  if (event.key === 'ArrowUp') {
     showUI();
     showAudioSlider();
     /* We need to find __reactEventHandlers as it changes every time we load the player */
@@ -126,7 +128,7 @@ document.addEventListener('keydown', (event) => {
   }
 
   /* If it's down, we want to decrease volume (increments at 10%)*/
-  if (event.key === 'ArrowDown' && isPlayer === true) {
+  if (event.key === 'ArrowDown') {
     showUI();
     showAudioSlider();
     /* We need to find __reactEventHandlers as it changes every time we load the player */
