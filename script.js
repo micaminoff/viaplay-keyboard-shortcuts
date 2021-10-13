@@ -103,48 +103,32 @@ document.addEventListener('keyup', (event) => {
   return false;
 });
 
+const getVolumeLevel = () => {
+  showUI();
+  showAudioSlider();
+  /* We need to find __reactEventHandlers as it changes every time we load the player */
+  const audioSliderHandler = document.querySelector('.audio-slider')['__reactEventHandlers'];
+  /* We find where to change volume */
+  return audioSliderHandler.children.props;
+};
+
 /* Listen to user pressing/holding down a button on the keyboard */
 document.addEventListener('keydown', (event) => {
-  /* If it's up, we want to increase volume (increments at 10%)*/
   if (!isPlayer) return; // Early exit
+
+  /* If it's up, we want to increase volume (increments at 10%)*/
   if (event.key === 'ArrowUp') {
-    showUI();
-    showAudioSlider();
-    /* We need to find __reactEventHandlers as it changes every time we load the player */
-    var audioSlider = document.querySelector('.audio-slider');
-    var reactHandlerKey = Object.keys(audioSlider).filter((item) => {
-      return item.indexOf('__reactEventHandlers') >= 0;
-    });
-    var reactHandler = audioSlider[reactHandlerKey[0]];
-    /* We find where to change volume */
-    const volumeLevel = reactHandler.children.props;
+    const volumeLevel = getVolumeLevel();
     /* Make sure audio doesn't go above 1 (100%) */
-    if (volumeLevel.value + 0.1 > 1) {
-      volumeLevel.onChange(1);
-    } else {
-      volumeLevel.onChange(volumeLevel.value + 0.1);
-    }
+    volumeLevel.onChange(Math.min(volumeLevel.value + 0.1, 1));
     hideAudioSlider();
   }
 
   /* If it's down, we want to decrease volume (increments at 10%)*/
   if (event.key === 'ArrowDown') {
-    showUI();
-    showAudioSlider();
-    /* We need to find __reactEventHandlers as it changes every time we load the player */
-    var audioSlider = document.querySelector('.audio-slider');
-    var reactHandlerKey = Object.keys(audioSlider).filter((item) => {
-      return item.indexOf('__reactEventHandlers') >= 0;
-    });
-    var reactHandler = audioSlider[reactHandlerKey[0]];
-    /* We find where to change volume */
-    const volumeLevel = reactHandler.children.props;
+    const volumeLevel = getVolumeLevel();
     /* Make sure audio doesn't go below 0 */
-    if (volumeLevel.value - 0.1 < 0) {
-      volumeLevel.onChange(0);
-    } else {
-      volumeLevel.onChange(volumeLevel.value - 0.1);
-    }
+    volumeLevel.onChange(Math.max(volumeLevel.value - 0.1, 0));
     hideAudioSlider();
   }
 });
