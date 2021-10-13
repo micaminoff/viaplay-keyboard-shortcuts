@@ -107,11 +107,10 @@ const getVolumeLevel = () => {
   showUI();
   showAudioSlider();
   /* We need to find __reactEventHandlers as it changes every time we load the player */
-  const audioSliderHandler = Object.keys(document.querySelector('.audio-slider')).find((key) =>
-    key.startsWith('__reactEventHandlers')
-  );
+  const audioSlider = document.querySelector('.audio-slider');
+  var reactHandlerKey = Object.keys(audioSlider).find((key) => key.startsWith('__reactEventHandlers'));
   /* We find where to change volume */
-  return audioSliderHandler.children.props;
+  return audioSlider[reactHandlerKey].children.props;
 };
 
 /* Listen to user pressing/holding down a button on the keyboard */
